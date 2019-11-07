@@ -40,6 +40,7 @@ public class HouseService {
             for (String metro : metros) {
                 if (metro.equals(house.getMetro())) {
                     result.add(house);
+                    break;
                 }
             }
         }

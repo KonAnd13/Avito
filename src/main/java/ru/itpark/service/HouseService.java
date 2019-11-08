@@ -7,10 +7,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class HouseService {
-    private Collection<House> houses;
 
-    private void getData() {
-        houses = JdbcTemplate.executeQuery(
+    private List<House> getData() {
+        return JdbcTemplate.executeQuery(
                 "jdbc:sqlite:db.sqlite",
                 "SELECT id, price, rooms, district, metro FROM houses;",
                 resultSet ->
@@ -25,18 +24,16 @@ public class HouseService {
     }
 
     public List<House> searchByPrice(int min, int max, Comparator<House> comparator) {
-        getData();
         List<House> result;
-        result = houses.stream().filter(o -> o.getPrice() >= min && o.getPrice() <= max).collect(Collectors.toList());
+        result = getData().stream().filter(o -> o.getPrice() >= min && o.getPrice() <= max).collect(Collectors.toList());
         result.sort(comparator);
 
         return result;
     }
 
     public List<House> searchByMetro(Comparator<House> comparator, String... metros) {
-        getData();
         List<House> result = new ArrayList<>();
-        for (House house : houses) {
+        for (House house : getData()) {
             for (String metro : metros) {
                 if (metro.equals(house.getMetro())) {
                     result.add(house);
@@ -49,8 +46,7 @@ public class HouseService {
     }
 
     public List<House> sortBy(Comparator<House> comparator) {
-        getData();
-        List<House> result = new ArrayList<>(houses);
+        List<House> result = getData();
         result.sort(comparator);
         return result;
     }

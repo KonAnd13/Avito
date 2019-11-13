@@ -24,11 +24,9 @@ public class HouseService {
     }
 
     public List<House> searchByPrice(int min, int max, Comparator<House> comparator) {
-        List<House> result;
-        result = getData().stream().filter(o -> o.getPrice() >= min && o.getPrice() <= max).collect(Collectors.toList());
-        result.sort(comparator);
-
-        return result;
+        return getData().stream()
+                .filter(o -> o.getPrice() >= min && o.getPrice() <= max)
+                .sorted(comparator).collect(Collectors.toList());
     }
 
     public List<House> searchByMetro(Comparator<House> comparator, String... metros) {
